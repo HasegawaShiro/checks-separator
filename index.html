@@ -1,61 +1,71 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <script charset="utf-8" type="text/javascript" src="index.js"></script>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Rubik&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="dist/index.css">
+  <script charset="utf-8" type="application/javascript" src="dist/index.js"></script>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <script src="https://kit.fontawesome.com/72aa9ce1de.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Rubik&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div id="members" class="container">
-        <p class="container-label">成員</p>
-        <div class="add-input-group">
-            <input name="new-member">
-            <button class="is-primary" name="add-member">新增成員</button>
-        </div>
-        <div class="tags"></div>
+  <div class="header">
+    <div>
+      <span data-i18n-label="title"></span>
+      <span style="margin-left: 1.2em" data-version>v1.1.0</span>
     </div>
+    <div class="selectWrapper">
+      <i class="fas fa-earth-americas"></i>
+      <select class="selectBox" id="languages"></select>
+    </div>
+  </div>
+  <div id="members" class="container">
+    <p class="container-label" data-i18n-label="member"></p>
+    <div class="add-input-group">
+      <input name="new-member">
+      <button class="is-primary" name="add-member" data-i18n-label="addMember"></button>
+    </div>
+    <div class="tags"></div>
+  </div>
 
-    <div id="items" class="container">
-        <p class="container-label">品項</p>
-        <div class="add-input-group">
-            <div class="static">品名</div>
-            <input name="new-item-name">
-            <div class="static">金額</div>
-            <input type="number" name="new-item-dollar">
-            <div class="static">元</div>
-            <button class="is-primary" name="add-item">新增品項</button>
-        </div>
-        <div class="tags"></div>
+  <div id="items" class="container">
+    <p class="container-label" data-i18n-label="item"></p>
+    <div class="add-input-group">
+      <div class="static" data-i18n-label="itemName"></div>
+      <input name="new-item-name">
+      <div class="static" data-i18n-label="amount"></div>
+      <input type="number" name="new-item-dollar">
+      <div class="static" data-i18n-label="dollar"></div>
+      <button class="is-primary" name="add-item" data-i18n-label="addItem"></button>
     </div>
+    <div class="tags"></div>
+  </div>
 
-    <div id="sheet" class="container">
-        <p class="container-label">試算表</p>
-        <div 
-            class="table-responsive" 
-            style="width: 100%; max-height: 80vh; overflow: auto; margin-bottom: 1em;"
-        >
-            <table id="count">
-                <thead>
-                    <tr id="sheet-header">
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div style="width: 100%; text-align: right;">
-            <button class="is-primary" name="count-result">計算結果</button>
-        </div>
+  <div id="sheet" class="container">
+    <p class="container-label" data-i18n-label="sheet"></p>
+    <div class="table-responsive" style="width: 100%; max-height: 80vh; overflow: auto; margin-bottom: 1em;">
+      <table id="count">
+        <thead>
+          <tr id="sheet-header">
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
+    <div style="width: 100%; text-align: right;">
+      <button class="is-primary" name="count-result" data-i18n-label="calculate"></button>
+    </div>
+  </div>
 
-    <div id="result" class="container hidden">
-        <p class="container-label">結果</p>
-        <div></div>
-        <div style="width: 100%; text-align: right;">
-            <button class="is-primary" name="download-result">輸出結果</button>
-        </div>
+  <div id="result" class="container hidden">
+    <p class="container-label" data-i18n-label="result"></p>
+    <div></div>
+    <div style="width: 100%; text-align: right;">
+      <button class="is-primary" name="download-result"><span data-i18n-label="export"></span>(.csv)</button>
     </div>
+  </div>
 </body>
+
 </html>
