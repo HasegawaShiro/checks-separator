@@ -1,4 +1,5 @@
 // by HasegawaShiro
+import { Translation } from "./declarations"
 
 const translation: Translation = {
   title: "Checks separator",

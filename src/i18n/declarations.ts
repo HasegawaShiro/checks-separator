@@ -1,14 +1,14 @@
 /** languages supported */
-declare enum supportLocales {
+export enum supportLocales {
   "zh_TW" = "繁體中文(台灣)",
   "en_US" = "English"
 }
-type supportLocale = keyof typeof supportLocales
+export type supportLocale = keyof typeof supportLocales
 /** 預設為繁體中文(台灣) */
-declare var DEFAULT_LOCALE: supportLocale = 'zh_TW'
+export const DEFAULT_LOCALE: supportLocale = 'zh_TW'
 
 /** declare all item need to be localized */
-interface Translation {
+export interface Translation {
   title: string,
   member: string,
   addMember: string,
@@ -29,5 +29,4 @@ interface Translation {
   message_memberDuplicate: string,
   message_amountNeedNumber: string,
 }
-type i18nLabel = keyof Translation
-declare var i18nLabels: Array<i18nLabel> = Object.keys(Translation) as i18nLabel[]
+export type i18nLabel = keyof Translation

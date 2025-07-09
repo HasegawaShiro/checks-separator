@@ -1,4 +1,5 @@
-import i18n from "./i18n/index";
+import { default as i18n, i18nLabels } from "./i18n/index"
+import { DEFAULT_LOCALE, supportLocale, supportLocales } from "./i18n/declarations"
 
 let LOCALE: supportLocale = DEFAULT_LOCALE
 let TOTAL: string = i18n(LOCALE, "total")
