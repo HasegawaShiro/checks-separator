@@ -1,11 +1,21 @@
-.is-primary,
-.tag.is-primary {
-  color: #FFF;
-  background-color: #4c808a;
+:root {
+  --primary-color: #4c808a;
+  --primary-text-color: #fff;
+  --primary-hover-color: #2d555d;
+  --primary-active-color: #67979f;
+
+  --primary-lighter-color: #6d95a8;
+  --primary-lighter-hover-color: #476b72;
+  --primary-lighter-active-color: #67979f;
+
+  --danger-color: #d15757;
+  --danger-color: #d15757;
 }
 
-.tag.is-primary .remove-button:hover {
-  color: rgb(209, 87, 87);
+.is-primary,
+.tag.is-primary {
+  color: var(--primary-text-color);
+  background-color: var(--primary-color);
 }
 
 div.header {
@@ -42,12 +52,12 @@ div.header {
 button.is-primary:hover,
 .is-primary.clickable:hover {
   cursor: pointer;
-  background-color: #2d555d;
+  background-color: var(--primary-hover-color);
 }
 
 button.is-primary:active,
 .is-primary.clickable:active {
-  background-color: #67979f;
+  background-color: var(--primary-active-color);
 }
 
 body {
@@ -90,15 +100,15 @@ input[type="checkbox"] + span:active::after {
 input[type="checkbox"]:checked + span::after {
   content: "\2714";
   margin-bottom: .25em;
-  background-color: rgb(27, 221, 140);
+  background-color: var(--primary-color);
 }
 
 input[type="checkbox"]:checked + span:hover:after {
-  background-color: rgb(46, 184, 126);
+  background-color: var(--primary-hover-color);
 }
 
 input[type="checkbox"]:checked + span:active:after {
-  background-color: rgb(37, 133, 93);
+  background-color: var(--primary-active-color);
 }
 
 button {
@@ -159,7 +169,7 @@ tr:last-child td {
 
 div.container {
   margin: 1.5em 5vw;
-  padding: 1.5em 5em;
+  padding: .5em 5em;
   background-color: #454555;
   border-radius: 8px;
 }
@@ -174,7 +184,7 @@ body div.container:not(:first-child) {
 
 p.container-label {
   font-size: 25px;
-  margin-top: -.3em;
+  /* margin-top: -.3em; */
   margin-left: -1em
 }
 
@@ -244,7 +254,7 @@ span.tag .remove-button {
 
 span.tag .remove-button:hover {
   cursor: pointer;
-  color: rgb(252, 23, 23);
+  color: var(--danger-color);
 }
 
 tr.hoverable:hover {
@@ -256,7 +266,7 @@ th.clickable {
 }
 
 th.clickable.selected {
-  background-color: rgb(27, 221, 140);
+  background-color: var(--primary-lighter-color);
 }
 
 th.clickable:hover {
@@ -265,7 +275,7 @@ th.clickable:hover {
 }
 
 th.clickable.selected:hover {
-  background-color: rgb(46, 184, 126);
+  background-color: var(--primary-lighter-hover-color);
 }
 
 th.clickable:active {
@@ -273,7 +283,7 @@ th.clickable:active {
 }
 
 th.clickable.selected:active {
-  background-color: rgb(37, 133, 93);
+  background-color: var(--primary-lighter-active-color);
 }
 
 *.hidden {
@@ -285,19 +295,19 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background-color: rgb(62, 65, 75);
+  background-color: #3e414b;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: rgb(43, 80, 69);
+  background-color: var(--primary-color);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(62, 136, 102);
+  background-color: var(--primary-hover-color);
 }
 
 body::-webkit-scrollbar-thumb:active {
-  background-color: rgb(49, 100, 77);
+  background-color: var(--primary-active-color);
 }
 
 .table-responsive::-webkit-scrollbar,
