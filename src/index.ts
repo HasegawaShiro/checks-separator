@@ -1,7 +1,6 @@
-import { i18nLabels, supportLocale, supportLocales, default as i18n } from "./i18n/index";
+import i18n from "./i18n/index";
 
-// let OLD_LOCALE: supportLocale = "zh-TW"
-let LOCALE: supportLocale = "zh-TW"
+let LOCALE: supportLocale = DEFAULT_LOCALE
 let TOTAL: string = i18n(LOCALE, "total")
 
 let _ITEMS: Item[] = [];
@@ -128,8 +127,6 @@ function renderLocale() {
   let total = _ITEMS.find(_ => _.name == TOTAL)
   TOTAL = i18n(LOCALE, "total")
   if (total && TOTAL != total.name) total.name = TOTAL
-
-  // OLD_LOCALE = LOCALE
 }
 function renderTable() {
   const resultDiv = document.querySelector("div#result");
@@ -319,7 +316,7 @@ class Tag {
   element: HTMLElement;
 
   constructor(text: string, id: string, removation = () => { }, removable = true) {
-    let that = this;
+    let _self = this;
     let main = document.createElement('span');
     main.classList.add('tag');
     main.classList.add('is-primary');
@@ -328,7 +325,7 @@ class Tag {
     let removeBtn = document.createElement('span');
     removeBtn.classList.add('remove-button');
     removeBtn.addEventListener('click', () => {
-      that.removeDOMNode();
+      _self.removeDOMNode();
       removation();
       renderTable();
     });
@@ -366,13 +363,14 @@ class Tag {
 class Member {
   name: string;
   tag: Tag;
-  items: Item[] = [];
+  items: Array<Item> = [];
+  itemsPaid: Array<Item> = [];
 
   constructor(name: string) {
-    const that = this;
+    const _self = this;
     this.name = name;
     let index = _MEMBERS.push(this) - 1;
-    this.tag = new Tag(name, `member-${index}`, function () { that.removeMember() });
+    this.tag = new Tag(name, `member-${index}`, function () { _self.removeMember() });
 
     let memberTags = <HTMLDivElement>document.querySelector("#members .tags");
     this.tag.addDOMNode(memberTags);
