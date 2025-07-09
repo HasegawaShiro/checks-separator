@@ -1,27 +1,28 @@
 {
-  "name": "cost-divide-calculator",
+  "name": "checks-separator",
   "version": "1.1.0",
   "description": "A tool for dividing costs among someone",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start:build": "tsc -w",
     "start:run": "nodemon ./dist/index.js",
     "start": "concurrently npm:start:*",
-    "build": "esbuild ./src/index.ts --bundle --minify --outfile=./dist/index.js && esbuild ./assets/index.css --bundle --minify --outfile=./dist/index.css && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/index.html && (rm temp.html || del temp.html)"
+    "build": "node build.js && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/Checks-separator.html && (del temp.html || rm temp.html) && (rmdir /s/q dist\\assets || rm -r dist/assets) && (rmdir /s/q dist\\src || rm -r dist/src)"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HasegawaShiro/cost-divide-calculator.git"
+    "url": "git+https://github.com/HasegawaShiro/checks-separator.git"
   },
   "author": "hasegawa_shiro",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HasegawaShiro/cost-divide-calculator/issues"
+    "url": "https://github.com/HasegawaShiro/checks-separator/issues"
   },
-  "homepage": "https://github.com/HasegawaShiro/cost-divide-calculator#readme",
+  "homepage": "https://github.com/HasegawaShiro/checks-separator#readme",
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "esbuild": "^0.20.1",
+    "esbuild": "^0.25.6",
     "inline-scripts": "^1.7.4",
     "nodemon": "^3.1.0",
     "ts-loader": "^9.5.1",
