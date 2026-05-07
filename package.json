@@ -8,7 +8,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon ./dist/index.js",
     "start": "concurrently npm:start:*",
-    "build": "node build.js && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/Checks-separator.html && (del temp.html || rm temp.html) && (rmdir /s/q dist\\assets || rm -r dist/assets) && (rmdir /s/q dist\\src || rm -r dist/src)"
+    "build": "node build.js && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/index.html && (del temp.html || rm temp.html) && (rmdir /s/q dist\\assets || rm -r dist/assets) && (rmdir /s/q dist\\src || rm -r dist/src) && cp ./dist/index.html ./dist/Checks-separator.html"
   },
   "repository": {
     "type": "git",
