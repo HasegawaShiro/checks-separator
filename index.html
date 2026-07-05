@@ -16,9 +16,9 @@
       <span data-i18n-label="title"></span>
       <span style="margin-left: 1.2em" data-version>v1.1.0</span>
     </div>
-    <div class="selectWrapper">
+    <div class="selector-wrapper">
       <i class="fas fa-earth-americas"></i>
-      <select class="selectBox" id="languages"></select>
+      <select class="custom-select" id="languages"></select>
     </div>
   </div>
   <div id="members" class="container">
@@ -39,6 +39,10 @@
       <input type="number" name="new-item-dollar">
       <div class="static" data-i18n-label="dollar"></div>
       <button class="is-primary" name="add-item" data-i18n-label="addItem"></button>
+    </div>
+    <div class="selector-wrapper member-selector" style="display: none;">
+      <i class="fas fa-user-circle"></i>
+      <select class="custom-select" id="members-selector"></select>
     </div>
     <div class="tags"></div>
   </div>

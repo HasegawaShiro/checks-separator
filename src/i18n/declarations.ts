@@ -28,5 +28,6 @@ export interface Translation {
   message_itemDuplicate: string,
   message_memberDuplicate: string,
   message_amountNeedNumber: string,
+  message_memberNotSelected: string,
 }
 export type i18nLabel = keyof Translation

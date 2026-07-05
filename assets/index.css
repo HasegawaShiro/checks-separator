@@ -3,12 +3,12 @@
   --primary-text-color: #fff;
   --primary-hover-color: #2d555d;
   --primary-active-color: #67979f;
+  --primary-disabled-color: #696e6e;
 
   --primary-lighter-color: #6d95a8;
   --primary-lighter-hover-color: #476b72;
   --primary-lighter-active-color: #67979f;
 
-  --danger-color: #d15757;
   --danger-color: #d15757;
 }
 
@@ -27,7 +27,9 @@ div.header {
   align-items: center;
   justify-content: space-between;
 }
-.selectWrapper {
+
+/* 下拉選單相關 */
+.selector-wrapper {
   padding: 0 0.5em;
   border-radius: 7px;
   display: inline-block;
@@ -37,7 +39,7 @@ div.header {
   font-size: 16px;
   line-height: 1.8em;
 }
-.selectBox {
+.custom-select {
   width: 15em;
   height: 1.2em;
   border: 0px;
@@ -45,13 +47,12 @@ div.header {
   background: transparent;
   color: white;
 }
-.selectBox option {
+.custom-select option {
   color: initial;
 }
 
 button.is-primary:hover,
 .is-primary.clickable:hover {
-  cursor: pointer;
   background-color: var(--primary-hover-color);
 }
 
@@ -118,6 +119,12 @@ button {
   background-color: rgb(221, 221, 221);
   border: 0px;
   border-radius: 3px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 button:hover {

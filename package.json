@@ -1,6 +1,6 @@
 {
   "name": "checks-separator",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A tool for dividing costs among someone",
   "main": "index.js",
   "type": "module",
@@ -8,7 +8,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon ./dist/index.js",
     "start": "concurrently npm:start:*",
-    "build": "node build.js && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/index.html && (del temp.html || rm temp.html) && (rmdir /s/q dist\\assets || rm -r dist/assets) && (rmdir /s/q dist\\src || rm -r dist/src) && cp ./dist/index.html ./dist/Checks-separator.html"
+    "build": "node build.js && inline-script-tags ./index.html ./temp.html && inline-stylesheets ./temp.html ./dist/index.html && (del temp.html || rm temp.html) && cp ./dist/index.html ./dist/Checks-separator.html"
   },
   "repository": {
     "type": "git",

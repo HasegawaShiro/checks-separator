@@ -22,6 +22,7 @@ const translation: Translation = {
   message_itemDuplicate: "The item has duplicated.",
   message_memberDuplicate: "The member has duplicated.",
   message_amountNeedNumber: "Input number in price please.",
+  message_memberNotSelected: "Please select a member.",
 }
 
 export default translation

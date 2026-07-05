@@ -4,10 +4,10 @@ import { DEFAULT_LOCALE, supportLocale, supportLocales } from "./i18n/declaratio
 let LOCALE: supportLocale = DEFAULT_LOCALE
 let TOTAL: string = i18n(LOCALE, "total")
 
-let _ITEMS: Item[] = [];
-let _MEMBERS: Member[] = [];
-let _TAG_NODES: HTMLElement[] = [];
-let _EXPORT: {
+const _ITEMS: Item[] = [];
+const _MEMBERS: Member[] = [];
+const _TAG_NODES: HTMLElement[] = [];
+const _EXPORT: {
   header: string[],
   content: (string | HTMLInputElement)[][],
   result: string[]
@@ -19,6 +19,7 @@ let _EXPORT: {
 
 document.addEventListener('DOMContentLoaded', function () {
   new Item(TOTAL, 0);
+  updateItemInputGroupDisableState(_MEMBERS.length == 0);
 
   // add Member
   const newMemberInput = document.querySelector("input[name='new-member']");
@@ -295,18 +296,47 @@ function calculate() {
       el.remove();
     }
 
-    let exportResult = [];
-    for (let member of _MEMBERS) {
+    let exportResult: string[] = [];
+    const _printPayString = (member: Member, payTo: Member, amount: number) => {
       const p = document.createElement("p");
-      let sum = 0;
-      for (let item of member.items) {
-        sum += item.price / item.divide;
-      }
-      const str = `${member.name}: $${sum}`;
+      const str = `${member.name} -> ${payTo.name}: $${amount}`;
+
       p.textContent = str;
       exportResult.push(str);
       resultDiv.appendChild(p);
     }
+
+    for (let member of _MEMBERS) {
+      member.payTo.clear();
+
+      for (let item of member.items) {
+        const payTo = item.buyer;
+
+        if (!payTo) continue
+        if (payTo.name == member.name) continue
+
+        let sum = member.payTo.get(payTo) || 0;
+        sum += item.price / item.divide;
+        member.payTo.set(payTo, sum);
+      }
+    }
+
+    for (let member of _MEMBERS) {
+      for (let [payToMember, amount] of member.payTo) {
+        console.log(`member: ${member.name}, payToMember: ${payToMember.name}, amount: ${amount}`)
+        if (payToMember.payTo.has(member)) {
+          const payDiff = amount - (payToMember.payTo.get(member) || 0);
+
+          if (payDiff > 0) {
+            _printPayString(member, payToMember, payDiff);
+            payToMember.payTo.delete(member);
+          }
+        } else {
+          _printPayString(member, payToMember, amount);
+        }
+      }
+    }
+
     _EXPORT.result = exportResult;
     resultContainer?.classList.remove("hidden");
   }
@@ -362,10 +392,16 @@ class Tag {
   }
 }
 class Member {
+  /** Member's name */
   name: string;
+  /** Member's tag */
   tag: Tag;
+  /** items bought by the member */
   items: Array<Item> = [];
+  /** items paid by the member */
   itemsPaid: Array<Item> = [];
+  /** Amounts owed to other members */
+  payTo: Map<Member, number> = new Map<Member, number>();
 
   constructor(name: string) {
     const _self = this;
@@ -375,6 +411,16 @@ class Member {
 
     let memberTags = <HTMLDivElement>document.querySelector("#members .tags");
     this.tag.addDOMNode(memberTags);
+
+    let memberSelector = <HTMLDivElement>document.querySelector("#members-selector");
+    if (memberSelector) {
+      let option = document.createElement("option");
+      option.value = this.name;
+      option.textContent = this.name;
+      memberSelector.appendChild(option);
+
+      Member._handleMembersChange();
+    }
   }
   toggleItem(element: HTMLInputElement, item: Item) {
     if (element.checked) {
@@ -389,13 +435,39 @@ class Member {
   removeMember() {
     const index = _MEMBERS.indexOf(this);
     if (index > -1) _MEMBERS.splice(index, 1);
+
+    let memberSelector = <HTMLDivElement>document.querySelector("#members-selector");
+    if (memberSelector) {
+      let option = memberSelector.querySelector(`option[value='${this.name}']`);
+      if (option) memberSelector.removeChild(option);
+
+      Member._handleMembersChange();
+    }
+
+    if (this.itemsPaid.length > 0) {
+      this.itemsPaid.forEach(item => {
+        item.removeItem();
+      });
+      this.itemsPaid = [];
+    }
+  }
+
+  private static _handleMembersChange() {
+    updateSelectorVisibility("members-selector", _MEMBERS.length > 0);
+    updateItemInputGroupDisableState(_MEMBERS.length == 0);
   }
 }
 class Item {
+  /** Name of Item */
   name: string;
+  /** Price of Item */
   price: number;
+  /** Tag associated with Item */
   tag: Tag;
+  /** Number of members sharing the Item */
   divide: number = 0;
+  /** Member who bought the Item */
+  buyer: Member | undefined;
 
   private addTag(): Tag {
     let index = _ITEMS.push(this) - 1;
@@ -441,13 +513,21 @@ class Item {
 
       if (total) total.price -= this.price;
     }
+
     const index = _ITEMS.indexOf(this);
     if (index > -1) _ITEMS.splice(index, 1);
+
+    if (this.buyer) {
+      const index = this.buyer.itemsPaid.indexOf(this);
+      if (index > -1) this.buyer.itemsPaid.splice(index, 1);
+    }
+
+    this.buyer = undefined;
     this.tag.removeDOMNode();
   }
 }
 
-function unionString(string: string, union: Array<string> | Object, delimiter = ',') {
+function unionString(string: string, union: Array<string> | Object, delimiter = ','): string {
   string = string.toString();
   if (typeof union === 'object') {
     let i: keyof typeof union
@@ -464,7 +544,7 @@ function unionString(string: string, union: Array<string> | Object, delimiter = 
   return string;
 }
 
-function addMember() {
+function addMember(): void {
   const newMemberInput = <HTMLInputElement>document.querySelector("input[name='new-member']");
   const value = newMemberInput?.value;
 
@@ -477,9 +557,16 @@ function addMember() {
     newMemberInput.value = "";
   }
 }
-function addItem() {
+function addItem(): boolean {
   const newItemName = <HTMLInputElement>document.querySelector("input[name='new-item-name']");
   const newItemDollar = <HTMLInputElement>document.querySelector("input[name='new-item-dollar']");
+  const memberSelector = <HTMLSelectElement>document.querySelector("#members-selector");
+
+  const member = _MEMBERS.find(x => x.name == memberSelector?.value);
+  if (!member) {
+    alert(i18n(LOCALE, "message_memberNotSelected"));
+    return false;
+  }
 
   const name = newItemName.value;
   const dollar = newItemDollar.value
@@ -494,7 +581,10 @@ function addItem() {
       if (_ITEMS.some(x => x.name == name)) {
         alert(i18n(LOCALE, "message_itemDuplicate"));
       } else {
-        new Item(name, validator);
+        const itemInstance = new Item(name, validator);
+        itemInstance.buyer = member;
+        member.itemsPaid.push(itemInstance);
+        
         newItemDollar.value = "";
       }
       newItemName.value = "";
@@ -505,6 +595,27 @@ function addItem() {
   return false;
 }
 
+function updateItemInputGroupDisableState(disabled: boolean) {
+  updateElementDisabledStateByName("new-item-name", disabled);
+  updateElementDisabledStateByName("new-item-dollar", disabled);
+  updateElementDisabledStateByName("add-item", disabled);
+}
+function updateSelectorVisibility(id: string, visible: boolean) {
+  const selector = <HTMLSelectElement>document.querySelector(`#${id}`);
+  if (!selector) return;
+
+  const selectorWrapper = <HTMLDivElement>selector.parentNode;
+  if (!selectorWrapper) return;
+
+  if (visible) selectorWrapper.style.removeProperty('display');
+  else selectorWrapper.style.setProperty('display', 'none');
+}
+function updateElementDisabledStateByName(id: string, disabled: boolean) {
+  const input = <HTMLInputElement>document.querySelector(`*[name='${id}']`);
+  if (!input) return;
+
+  input.disabled = disabled;
+}
 function checkRowAllSelected(tr: HTMLTableRowElement | null | undefined) {
   if (!tr) return
 

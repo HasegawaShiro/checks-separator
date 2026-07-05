@@ -22,6 +22,7 @@ const translation: Translation = {
   message_itemDuplicate: "品名已重複",
   message_memberDuplicate: "人員已重複",
   message_amountNeedNumber: "金額請輸入數字",
+  message_memberNotSelected: "請選擇一位成員",
 }
 
 export default translation
